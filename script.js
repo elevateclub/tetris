@@ -132,9 +132,9 @@ function tick(ts){
     requestAnimationFrame(tick);
 }
 
-function run(ts){
+function init(ts){
     setLevel(1);
     tick(ts);
 }
 
-requestAnimationFrame(run);
+requestAnimationFrame(init);
