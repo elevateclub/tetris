@@ -88,10 +88,19 @@ function jmino(pox, poy) {
     ctx.stroke();
 }
 
-function draw(ts){
+function drawmino(pc, px, py) {
+    return [tmino, omino, imino, jmino, lmino, smino, zmino][pc](px, py);
+}
+
+function nextmino() {
+    return Math.floor(Math.random() * 7);
+}
+
+var currmino = nextmino();
+
+function draw(ts) {
     frame();
-    tmino(3, 0);
-    imino(0, 19);
+    drawmino(currmino, 3, 0);
 }
 
 function run(ts){
