@@ -103,14 +103,18 @@ function draw(ts) {
     drawmino(currmino, 3, 0);
 }
 
-function run(ts){
+
+function update(ts) {
+}
+
+function tick(ts){
+    update(ts);
     draw(ts);
     requestAnimationFrame(tick);
 }
 
-function tick(ts){
-    draw(ts);
-    requestAnimationFrame(tick);
+function run(ts){
+    tick(ts);
 }
 
 requestAnimationFrame(run);
