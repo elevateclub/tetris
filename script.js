@@ -2,8 +2,8 @@ var canvas = document.querySelector("#canvas");
 var ctx = canvas.getContext("2d");
 
 var s = 20;
-var ox = 0;
-var oy = 0;
+var ox = 200;
+var oy = 200;
 
 function frame(){
     ctx.clearRect(ox, oy, 10*s, 20*s);
@@ -13,9 +13,13 @@ function frame(){
     ctx.stroke();
 }
 
+function scale(o, n) {
+    return o + n * s
+}
+
 function tmino(ctx, pox, poy) {
-    pox *= s;
-    poy *= s;
+    pox = scale(ox, pox);
+    poy = scale(oy, poy);
     ctx.beginPath();
     ctx.rect(pox, poy, s, s);
     ctx.rect(pox+s, poy, s, s);
@@ -25,8 +29,8 @@ function tmino(ctx, pox, poy) {
 }
 
 function omino(ctx, pox, poy) {
-    pox *= s;
-    poy *= s;
+    pox = scale(ox, pox);
+    poy = scale(oy, poy);
     ctx.beginPath();
     ctx.rect(pox, poy, s, s);
     ctx.rect(pox+s, poy, s, s);
@@ -36,8 +40,8 @@ function omino(ctx, pox, poy) {
 }
 
 function smino(ctx, pox, poy) {
-    pox *= s;
-    poy *= s;
+    pox = scale(ox, pox);
+    poy = scale(oy, poy);
     ctx.beginPath();
     ctx.rect(pox+s, poy, s, s);
     ctx.rect(pox+s+s, poy, s, s);
@@ -47,8 +51,8 @@ function smino(ctx, pox, poy) {
 }
 
 function zmino(ctx, pox, poy) {
-    pox *= s;
-    poy *= s;
+    pox = scale(ox, pox);
+    poy = scale(oy, poy);
     ctx.beginPath();
     ctx.rect(pox, poy, s, s);
     ctx.rect(pox+s, poy, s, s);
@@ -58,8 +62,8 @@ function zmino(ctx, pox, poy) {
 }
 
 function imino(ctx, pox, poy) {
-    pox *= s;
-    poy *= s;
+    pox = scale(ox, pox);
+    poy = scale(oy, poy);
     ctx.beginPath();
     ctx.rect(pox, poy, s, s);
     ctx.rect(pox+s, poy, s, s);
@@ -69,8 +73,8 @@ function imino(ctx, pox, poy) {
 }
 
 function lmino(ctx, pox, poy) {
-    pox *= s;
-    poy *= s;
+    pox = scale(ox, pox);
+    poy = scale(oy, poy);
     ctx.beginPath();
     ctx.rect(pox, poy+s, s, s);
     ctx.rect(pox+s, poy+s, s, s);
@@ -80,8 +84,8 @@ function lmino(ctx, pox, poy) {
 }
 
 function jmino(ctx, pox, poy) {
-    pox *= s;
-    poy *= s;
+    pox = scale(ox, pox);
+    poy = scale(oy, poy);
     ctx.beginPath();
     ctx.rect(pox, poy, s, s);
     ctx.rect(pox, poy+s, s, s);
