@@ -6,6 +6,8 @@ var ox = 0;
 var oy = 0;
 
 function frame(){
+    ctx.clearRect(ox, oy, 10*s, 20*s);
+
     ctx.beginPath();
     ctx.rect(ox, oy, 10*s, 20*s);
     ctx.stroke();
@@ -97,14 +99,31 @@ function nextmino() {
 }
 
 var currmino = nextmino();
+var currmino_pos = [3, 0];
 
 function draw(ts) {
     frame();
-    drawmino(currmino, 3, 0);
+    drawmino(currmino, currmino_pos[0], currmino_pos[1]);
 }
 
+function gravity(lvl) {
+    return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
+}
+
+var lvl = 0, G = 0;
+
+function setLevel(l) {
+    lvl = l;
+    G = gravity(lvl) * 1000;
+}
+
+var lastDrop = 0;
 
 function update(ts) {
+    if (ts - lastDrop >= G) {
+        currmino_pos[1]++;
+        lastDrop = ts;
+    }
 }
 
 function tick(ts){
@@ -114,6 +133,7 @@ function tick(ts){
 }
 
 function run(ts){
+    setLevel(1);
     tick(ts);
 }
 
