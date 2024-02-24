@@ -13,7 +13,7 @@ function frame(){
     ctx.stroke();
 }
 
-function tmino(pox, poy) {
+function tmino(ctx, pox, poy) {
     pox *= s;
     poy *= s;
     ctx.beginPath();
@@ -24,7 +24,7 @@ function tmino(pox, poy) {
     ctx.stroke();
 }
 
-function omino(pox, poy) {
+function omino(ctx, pox, poy) {
     pox *= s;
     poy *= s;
     ctx.beginPath();
@@ -35,7 +35,7 @@ function omino(pox, poy) {
     ctx.stroke();
 }
 
-function smino(pox, poy) {
+function smino(ctx, pox, poy) {
     pox *= s;
     poy *= s;
     ctx.beginPath();
@@ -46,7 +46,7 @@ function smino(pox, poy) {
     ctx.stroke();
 }
 
-function zmino(pox, poy) {
+function zmino(ctx, pox, poy) {
     pox *= s;
     poy *= s;
     ctx.beginPath();
@@ -57,7 +57,7 @@ function zmino(pox, poy) {
     ctx.stroke();
 }
 
-function imino(pox, poy) {
+function imino(ctx, pox, poy) {
     pox *= s;
     poy *= s;
     ctx.beginPath();
@@ -68,7 +68,7 @@ function imino(pox, poy) {
     ctx.stroke();
 }
 
-function lmino(pox, poy) {
+function lmino(ctx, pox, poy) {
     pox *= s;
     poy *= s;
     ctx.beginPath();
@@ -79,7 +79,7 @@ function lmino(pox, poy) {
     ctx.stroke();
 }
 
-function jmino(pox, poy) {
+function jmino(ctx, pox, poy) {
     pox *= s;
     poy *= s;
     ctx.beginPath();
@@ -91,7 +91,7 @@ function jmino(pox, poy) {
 }
 
 function drawmino(pc, px, py) {
-    return [tmino, omino, imino, jmino, lmino, smino, zmino][pc](px, py);
+    return [tmino, omino, imino, jmino, lmino, smino, zmino][pc](ctx, px, py);
 }
 
 function nextmino() {
