@@ -38,7 +38,7 @@ function smino(pox, poy) {
     poy *= s;
     ctx.beginPath();
     ctx.rect(pox+s, poy, s, s);
-    ctx.rect(pox+s, poy, s, s);
+    ctx.rect(pox+s+s, poy, s, s);
     ctx.rect(pox, poy+s, s, s);
     ctx.rect(pox+s, poy+s, s, s);
     ctx.stroke();
@@ -51,7 +51,7 @@ function zmino(pox, poy) {
     ctx.rect(pox, poy, s, s);
     ctx.rect(pox+s, poy, s, s);
     ctx.rect(pox+s, poy+s, s, s);
-    ctx.rect(pox+s, poy+s, s, s);
+    ctx.rect(pox+s+s, poy+s, s, s);
     ctx.stroke();
 }
 
