@@ -143,6 +143,27 @@ class TetrisEngine {
         return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
     }
 
+    handleKeyPress(evt) {
+        switch (evt.code) {
+            case "KeyH":
+            case "ArrowLeft":
+                this.currentPiece.x--;
+                break;
+            case "KeyL":
+            case "ArrowRight":
+                this.currentPiece.x++;
+                break;
+            case "KeyK":
+            case"ArrowUp":
+                this.currentPiece.rotate();
+                break;
+            case "KeyJ":
+            case"ArrowDown":
+                this.currentPiece.y++;
+                break;
+        }
+    }
+
     setLevel(lvl) {
         this.lvl = lvl;
         this.G = this.gravity(lvl) * 1000;
@@ -183,5 +204,6 @@ function tick(ts) {
 (function() {
     var canvas = document.querySelector("#canvas");
     tetris = new Tetris(canvas.getContext("2d"));
+    window.addEventListener("keydown", tetris.engine.handleKeyPress.bind(tetris.engine));
     requestAnimationFrame(run);
 })();
