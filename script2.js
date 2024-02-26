@@ -1,4 +1,4 @@
-class TetrisMino {
+class MinoBase {
     constructor(x, y, sq) {
         this.x = x;
         this.y = y;
@@ -31,80 +31,85 @@ class TetrisMino {
     }
 }
 
-class TMino extends TetrisMino {
-    constructor(x, y) {
-        super(x, y, [
-            [0, 1, 0],
-            [1, 1, 1],
-            [0, 0, 0]
-        ]);
+let Minos = {
+    T: class extends MinoBase {
+        constructor(x, y) {
+            super(x, y, [
+                [0, 1, 0],
+                [1, 1, 1],
+                [0, 0, 0]
+            ]);
+        }
+    },
+
+    I: class extends MinoBase {
+       constructor(x, y) {
+           super(x, y, [
+               [0, 0, 0, 0],
+               [1, 1, 1, 1],
+               [0, 0, 0, 0],
+               [0, 0, 0, 0],
+           ]);
+       }
+    },
+
+    O: class extends MinoBase {
+        constructor(x, y) {
+            super(x, y, [
+                [1, 1],
+                [1, 1],
+            ]);
+        }
+    },
+
+    S: class extends MinoBase {
+        constructor(x, y) {
+            super(x, y, [
+                [1, 1, 0],
+                [0, 1, 1],
+                [0, 0, 0]
+            ]);
+        }
+    },
+
+    Z: class extends MinoBase {
+       constructor(x, y) {
+           super(x, y, [
+               [0, 1, 1],
+               [1, 1, 0],
+               [0, 0, 0]
+           ]);
+       }
+    },
+
+    L: class extends MinoBase {
+        constructor(x, y) {
+            super(x, y, [
+                [0, 0, 1],
+                [1, 1, 1],
+                [0, 0, 0]
+            ]);
+        }
+    },
+
+    J: class extends MinoBase {
+        constructor(x, y) {
+            super(x, y, [
+                [1, 0, 0],
+                [1, 1, 1],
+                [0, 0, 0]
+            ]);
+        }
     }
 }
 
-class IMino extends TetrisMino {
-    constructor(x, y) {
-        super(x, y, [
-            [0, 0, 0, 0],
-            [1, 1, 1, 1],
-            [0, 0, 0, 0],
-            [0, 0, 0, 0],
-        ]);
-    }
-}
-
-class OMino extends TetrisMino {
-    constructor(x, y) {
-        super(x, y, [
-            [1, 1],
-            [1, 1],
-        ]);
-    }
-}
-
-class SMino extends TetrisMino {
-    constructor(x, y) {
-        super(x, y, [
-            [1, 1, 0],
-            [0, 1, 1],
-            [0, 0, 0]
-        ]);
-    }
-}
-
-class ZMino extends TetrisMino {
-    constructor(x, y) {
-        super(x, y, [
-            [0, 1, 1],
-            [1, 1, 0],
-            [0, 0, 0]
-        ]);
-    }
-}
-
-class LMino extends TetrisMino {
-    constructor(x, y) {
-        super(x, y, [
-            [0, 0, 1],
-            [1, 1, 1],
-            [0, 0, 0]
-        ]);
-    }
-}
-
-class JMino extends TetrisMino {
-    constructor(x, y) {
-        super(x, y, [
-            [1, 0, 0],
-            [1, 1, 1],
-            [0, 0, 0]
-        ]);
-    }
-}
+const allminos = [Minos.T, Minos.I, Minos.O, Minos.S, Minos.Z, Minos.L, Minos.J];
 
 function randmino(x, y) {
     var rand = Math.floor(Math.random() * 7);
-    return new [TMino, IMino, OMino, SMino, ZMino, LMino, JMino][rand](x, y);
+    return new allminos[rand](x, y);
 }
+
 
 class TetrisCanvas {
     constructor(ctx, sc, ox, oy) {
@@ -143,7 +148,7 @@ class TetrisEngine {
         return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
     }
 
-    handleKeyPress(evt) {
+    handleKeyPress = (evt) => {
         switch (evt.code) {
             case "KeyH":
             case "ArrowLeft":
@@ -204,6 +209,6 @@ function tick(ts) {
 (function() {
     var canvas = document.querySelector("#canvas");
     tetris = new Tetris(canvas.getContext("2d"));
-    window.addEventListener("keydown", tetris.engine.handleKeyPress.bind(tetris.engine));
+    window.addEventListener("keydown", tetris.engine.handleKeyPress);
     requestAnimationFrame(run);
 })();
