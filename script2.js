@@ -147,11 +147,10 @@ let Minos = {
 
 const allminos = [Minos.T, Minos.I, Minos.O, Minos.S, Minos.Z, Minos.L, Minos.J];
 
-function randmino(x, y) {
+function randmino() {
     var rand = Math.floor(Math.random() * 7);
-    return new allminos[rand](x, y);
+    return new allminos[rand](3, -1);
 }
-
 
 class TetrisCanvas {
     constructor(ctx, sc, ox, oy) {
@@ -181,7 +180,7 @@ class TetrisEngine {
         this.lastDrop = 0;
         this.setLevel(1);
 
-        this.currentPiece = randmino(3, -1);
+        this.currentPiece = randmino();
 
         this.rows = TetrisEngine.clearRows();
     }
