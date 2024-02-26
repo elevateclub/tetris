@@ -1,40 +1,82 @@
 class MinoBase {
-    constructor(x, y, sq) {
+    constructor(x, y, color, sq) {
         this.x = x;
         this.y = y;
+        this.color = color;
         this.sq = sq
     }
 
-    rotate() {
+    /*
+        rotate applies a transformation to the this.sq matrix.
+        dir determines direction of rotation
+    */
+    rotate(dir) {
         const a = [], n = this.sq.length;
-        for (var i = 0; i < n; i++) {
-            var row = [];
-            for (var j = n-1; j >= 0; j--) {
-                row.push(this.sq[j][i])
-            }    
-            a.push(row);
+
+        switch (dir) {
+            case RotateDirection.None:
+                a = JSON.parse(JSON.stringify(this.sq));
+                break;
+            case RotateDirection.Clockwise:
+                for (var i = 0; i < n; i++) {
+                    var row = [];
+                    for (var j = n-1; j >= 0; j--) {
+                        row.push(this.sq[j][i])
+                    }    
+                    a.push(row);
+                }
+                break;
+            case RotateDirection.CounterClockwise:
+                for (var i = n-1; i >= 0; i--) {
+                    var row = [];
+                    for (var j = 0; j < n; j++) {
+                        row.push(this.sq[j][i])
+                    }    
+                    a.push(row);
+                }
+                break;
+            case RotateDirection.Flip180:
+                for (var i = n-1; i >= 0; i--) {
+                    var row = [];
+                    for (var j = 0; j < n; j++) {
+                        row.push(this.sq[i][j])
+                    }
+                    a.push(row);
+                }
+                break;    
         }
-        this.sq = a;
+
+        return a;
     }
 
+    /*
+        draw renders a rect at the given board position represented by this.sq
+    */
     draw(ctx, sc) {
-        ctx.beginPath();
+        ctx.fillStyle = this.color;
+
         const n = this.sq.length;
         for (var i = 0; i < n; i++) {
             for (var j = 0; j < n; j++) {
                 if (this.sq[i][j]) {
-                    ctx.rect(sc*(this.x+j), sc*(this.y+i), sc, sc);
+                    ctx.fillRect(sc*(this.x+j), sc*(this.y+i), sc, sc);
                 }
             }
         }
-        ctx.stroke();
     }
+}
+
+RotateDirection = {
+    None: 0,
+    Clockwise: 1,
+    CounterClockwise: 2,
+    Flip180: 3,
 }
 
 let Minos = {
     T: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "red", [
                 [0, 1, 0],
                 [1, 1, 1],
                 [0, 0, 0]
@@ -44,7 +86,7 @@ let Minos = {
 
     I: class extends MinoBase {
        constructor(x, y) {
-           super(x, y, [
+           super(x, y, "orange", [
                [0, 0, 0, 0],
                [1, 1, 1, 1],
                [0, 0, 0, 0],
@@ -55,7 +97,7 @@ let Minos = {
 
     O: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "yellow", [
                 [1, 1],
                 [1, 1],
             ]);
@@ -64,7 +106,7 @@ let Minos = {
 
     S: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "green", [
                 [1, 1, 0],
                 [0, 1, 1],
                 [0, 0, 0]
@@ -74,7 +116,7 @@ let Minos = {
 
     Z: class extends MinoBase {
        constructor(x, y) {
-           super(x, y, [
+           super(x, y, "blue", [
                [0, 1, 1],
                [1, 1, 0],
                [0, 0, 0]
@@ -84,7 +126,7 @@ let Minos = {
 
     L: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "purple", [
                 [0, 0, 1],
                 [1, 1, 1],
                 [0, 0, 0]
@@ -94,7 +136,7 @@ let Minos = {
 
     J: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "brown", [
                 [1, 0, 0],
                 [1, 1, 1],
                 [0, 0, 0]
@@ -141,10 +183,14 @@ class TetrisEngine {
 
         this.currentPiece = randmino(3, -1);
 
-        this.rows = [];
+        this.rows = TetrisEngine.clearRows();
     }
 
-    gravity(lvl) {
+    static clearRows() {
+        return Array(20).fill(Array(10).fill(0));
+    }
+
+    static gravity(lvl) {
         return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
     }
 
@@ -160,18 +206,24 @@ class TetrisEngine {
                 break;
             case "KeyK":
             case"ArrowUp":
-                this.currentPiece.rotate();
+                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.Clockwise);
                 break;
             case "KeyJ":
             case"ArrowDown":
                 this.currentPiece.y++;
+                break;
+            case "KeyA":
+                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.CounterClockwise);
+                break;
+            case "KeyS":
+                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.Flip180);
                 break;
         }
     }
 
     setLevel(lvl) {
         this.lvl = lvl;
-        this.G = this.gravity(lvl) * 1000;
+        this.G = TetrisEngine.gravity(lvl) * 1000;
     }
 
     tick(ts) {
