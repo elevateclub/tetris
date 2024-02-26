@@ -5,16 +5,47 @@ class MinoBase {
         this.sq = sq
     }
 
-    rotate() {
+    /*
+        rotate applies a transformation to the sq matrix.
+        dir determines direction of rotation
+        0: clockwise (cw)
+        1: counter-cw (ccw)
+        2: 180 flip
+    */
+    rotate(dir) {
         const a = [], n = this.sq.length;
-        for (var i = 0; i < n; i++) {
-            var row = [];
-            for (var j = n-1; j >= 0; j--) {
-                row.push(this.sq[j][i])
-            }    
-            a.push(row);
+
+        switch (dir) {
+            case 0:
+                for (var i = 0; i < n; i++) {
+                    var row = [];
+                    for (var j = n-1; j >= 0; j--) {
+                        row.push(this.sq[j][i])
+                    }    
+                    a.push(row);
+                }
+                break;
+            case 1:
+                for (var i = n-1; i >= 0; i--) {
+                    var row = [];
+                    for (var j = 0; j < n; j++) {
+                        row.push(this.sq[j][i])
+                    }    
+                    a.push(row);
+                }
+                break;
+            case 2:
+                for (var i = n-1; i >= 0; i--) {
+                    var row = [];
+                    for (var j = 0; j < n; j++) {
+                        row.push(this.sq[i][j])
+                    }
+                    a.push(row);
+                }
+                break;    
         }
-        this.sq = a;
+
+        return a;
     }
 
     draw(ctx, sc) {
@@ -160,11 +191,17 @@ class TetrisEngine {
                 break;
             case "KeyK":
             case"ArrowUp":
-                this.currentPiece.rotate();
+                this.currentPiece.sq = this.currentPiece.rotate(0);
                 break;
             case "KeyJ":
             case"ArrowDown":
                 this.currentPiece.y++;
+                break;
+            case "KeyA":
+                this.currentPiece.sq = this.currentPiece.rotate(1);
+                break;
+            case "KeyS":
+                this.currentPiece.sq = this.currentPiece.rotate(2);
                 break;
         }
     }
