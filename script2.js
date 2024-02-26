@@ -167,9 +167,22 @@ class TetrisCanvas {
         this.ctx.stroke();
     }
 
-    tick(pc, rows) {
+    tick(engine) {
         this.drawFrame();
-        pc.draw(this.ctx, this.sc);
+        engine.getCurrentPiece().draw(this.ctx, this.sc);
+
+        const rows = engine.getRows();
+        this.ctx.beginPath();
+        for (var i = 0; i < 20; i++) {
+            for (var j = 0; j < 10; j++) {
+                if (rows[i][j] > 0) {
+                    const x = j * this.sc;
+                    const y = i * this.sc;
+                    this.ctx.rect(x, y, this.sc, this.sc);
+                }
+            }
+        }
+        this.ctx.stroke();
     }
 }
 
@@ -186,7 +199,11 @@ class TetrisEngine {
     }
 
     static clearRows() {
-        return Array(20).fill(Array(10).fill(0));
+        const a = [];
+        for (var i = 0; i < 20; i++) {
+            a.push(Array(10).fill(0));
+        }
+        return a;
     }
 
     static gravity(lvl) {
@@ -231,6 +248,14 @@ class TetrisEngine {
             this.lastDrop = ts;
         }
     }
+
+    getCurrentPiece() {
+        return this.currentPiece;
+    }
+
+    getRows() {
+        return this.rows;
+    }
 }
 
 class Tetris {
@@ -242,7 +267,7 @@ class Tetris {
 
     tick(ts) {
         this.engine.tick(ts);
-        this.canvas.tick(this.engine.currentPiece);
+        this.canvas.tick(this.engine);
     }
 }
 
