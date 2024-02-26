@@ -14,6 +14,9 @@ class MinoBase {
         const a = [], n = this.sq.length;
 
         switch (dir) {
+            case RotateDirection.None:
+                a = JSON.parse(JSON.stringify(this.sq));
+                break;
             case RotateDirection.Clockwise:
                 for (var i = 0; i < n; i++) {
                     var row = [];
@@ -64,9 +67,10 @@ class MinoBase {
 }
 
 RotateDirection = {
-    Clockwise: 0,
-    CounterClockwise: 1,
-    Flip180: 2,
+    None: 0,
+    Clockwise: 1,
+    CounterClockwise: 2,
+    Flip180: 3,
 }
 
 let Minos = {
