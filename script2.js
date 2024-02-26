@@ -1,12 +1,13 @@
 class MinoBase {
-    constructor(x, y, sq) {
+    constructor(x, y, color, sq) {
         this.x = x;
         this.y = y;
+        this.color = color;
         this.sq = sq
     }
 
     /*
-        rotate applies a transformation to the sq matrix.
+        rotate applies a transformation to the this.sq matrix.
         dir determines direction of rotation
         0: clockwise (cw)
         1: counter-cw (ccw)
@@ -48,24 +49,27 @@ class MinoBase {
         return a;
     }
 
+    /*
+        draw renders a rect at the given board position represented by this.sq
+    */
     draw(ctx, sc) {
-        ctx.beginPath();
+        ctx.fillStyle = this.color;
+
         const n = this.sq.length;
         for (var i = 0; i < n; i++) {
             for (var j = 0; j < n; j++) {
                 if (this.sq[i][j]) {
-                    ctx.rect(sc*(this.x+j), sc*(this.y+i), sc, sc);
+                    ctx.fillRect(sc*(this.x+j), sc*(this.y+i), sc, sc);
                 }
             }
         }
-        ctx.stroke();
     }
 }
 
 let Minos = {
     T: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "red", [
                 [0, 1, 0],
                 [1, 1, 1],
                 [0, 0, 0]
@@ -75,7 +79,7 @@ let Minos = {
 
     I: class extends MinoBase {
        constructor(x, y) {
-           super(x, y, [
+           super(x, y, "orange", [
                [0, 0, 0, 0],
                [1, 1, 1, 1],
                [0, 0, 0, 0],
@@ -86,7 +90,7 @@ let Minos = {
 
     O: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "yellow", [
                 [1, 1],
                 [1, 1],
             ]);
@@ -95,7 +99,7 @@ let Minos = {
 
     S: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "green", [
                 [1, 1, 0],
                 [0, 1, 1],
                 [0, 0, 0]
@@ -105,7 +109,7 @@ let Minos = {
 
     Z: class extends MinoBase {
        constructor(x, y) {
-           super(x, y, [
+           super(x, y, "blue", [
                [0, 1, 1],
                [1, 1, 0],
                [0, 0, 0]
@@ -115,7 +119,7 @@ let Minos = {
 
     L: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "purple", [
                 [0, 0, 1],
                 [1, 1, 1],
                 [0, 0, 0]
@@ -125,7 +129,7 @@ let Minos = {
 
     J: class extends MinoBase {
         constructor(x, y) {
-            super(x, y, [
+            super(x, y, "brown", [
                 [1, 0, 0],
                 [1, 1, 1],
                 [0, 0, 0]

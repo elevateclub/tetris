@@ -20,78 +20,71 @@ function scale(o, n) {
 function tmino(ctx, pox, poy) {
     pox = scale(ox, pox);
     poy = scale(oy, poy);
-    ctx.beginPath();
-    ctx.rect(pox, poy, s, s);
-    ctx.rect(pox+s, poy, s, s);
-    ctx.rect(pox+s+s, poy, s, s);
-    ctx.rect(pox+s, poy+s, s, s);
-    ctx.stroke();
+    ctx.fillStyle = "red";
+    ctx.fillRect(pox, poy, s, s);
+    ctx.fillRect(pox+s, poy, s, s);
+    ctx.fillRect(pox+s+s, poy, s, s);
+    ctx.fillRect(pox+s, poy+s, s, s);
 }
 
 function omino(ctx, pox, poy) {
     pox = scale(ox, pox);
     poy = scale(oy, poy);
-    ctx.beginPath();
-    ctx.rect(pox, poy, s, s);
-    ctx.rect(pox+s, poy, s, s);
-    ctx.rect(pox, poy+s, s, s);
-    ctx.rect(pox+s, poy+s, s, s);
-    ctx.stroke();
+    ctx.fillStyle = "orange";
+    ctx.fillRect(pox, poy, s, s);
+    ctx.fillRect(pox+s, poy, s, s);
+    ctx.fillRect(pox, poy+s, s, s);
+    ctx.fillRect(pox+s, poy+s, s, s);
 }
 
 function smino(ctx, pox, poy) {
     pox = scale(ox, pox);
     poy = scale(oy, poy);
-    ctx.beginPath();
-    ctx.rect(pox+s, poy, s, s);
-    ctx.rect(pox+s+s, poy, s, s);
-    ctx.rect(pox, poy+s, s, s);
-    ctx.rect(pox+s, poy+s, s, s);
-    ctx.stroke();
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(pox+s, poy, s, s);
+    ctx.fillRect(pox+s+s, poy, s, s);
+    ctx.fillRect(pox, poy+s, s, s);
+    ctx.fillRect(pox+s, poy+s, s, s);
 }
 
 function zmino(ctx, pox, poy) {
     pox = scale(ox, pox);
     poy = scale(oy, poy);
-    ctx.beginPath();
-    ctx.rect(pox, poy, s, s);
-    ctx.rect(pox+s, poy, s, s);
-    ctx.rect(pox+s, poy+s, s, s);
-    ctx.rect(pox+s+s, poy+s, s, s);
-    ctx.stroke();
+    ctx.fillStyle = "green";
+    ctx.fillRect(pox, poy, s, s);
+    ctx.fillRect(pox+s, poy, s, s);
+    ctx.fillRect(pox+s, poy+s, s, s);
+    ctx.fillRect(pox+s+s, poy+s, s, s);
 }
 
 function imino(ctx, pox, poy) {
     pox = scale(ox, pox);
     poy = scale(oy, poy);
-    ctx.beginPath();
-    ctx.rect(pox, poy, s, s);
-    ctx.rect(pox+s, poy, s, s);
-    ctx.rect(pox+s+s, poy, s, s);
-    ctx.rect(pox+s+s+s, poy, s, s);
-    ctx.stroke();
+    ctx.fillStyle = "blue";
+    ctx.fillRect(pox, poy, s, s);
+    ctx.fillRect(pox+s, poy, s, s);
+    ctx.fillRect(pox+s+s, poy, s, s);
+    ctx.fillRect(pox+s+s+s, poy, s, s);
 }
 
 function lmino(ctx, pox, poy) {
     pox = scale(ox, pox);
     poy = scale(oy, poy);
-    ctx.beginPath();
-    ctx.rect(pox, poy+s, s, s);
-    ctx.rect(pox+s, poy+s, s, s);
-    ctx.rect(pox+s+s, poy+s, s, s);
-    ctx.rect(pox+s+s, poy, s, s);
-    ctx.stroke();
+    ctx.fillStyle = "purple";
+    ctx.fillRect(pox, poy+s, s, s);
+    ctx.fillRect(pox+s, poy+s, s, s);
+    ctx.fillRect(pox+s+s, poy+s, s, s);
+    ctx.fillRect(pox+s+s, poy, s, s);
 }
 
 function jmino(ctx, pox, poy) {
     pox = scale(ox, pox);
     poy = scale(oy, poy);
-    ctx.beginPath();
-    ctx.rect(pox, poy, s, s);
-    ctx.rect(pox, poy+s, s, s);
-    ctx.rect(pox+s, poy+s, s, s);
-    ctx.rect(pox+s+s, poy+s, s, s);
-    ctx.stroke();
+    ctx.fillStyle = "brown";
+    ctx.fillRect(pox, poy, s, s);
+    ctx.fillRect(pox, poy+s, s, s);
+    ctx.fillRect(pox+s, poy+s, s, s);
+    ctx.fillRect(pox+s+s, poy+s, s, s);
 }
 
 function drawmino(pc, px, py) {
