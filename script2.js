@@ -183,10 +183,14 @@ class TetrisEngine {
 
         this.currentPiece = randmino(3, -1);
 
-        this.rows = [];
+        this.rows = TetrisEngine.clearRows();
     }
 
-    gravity(lvl) {
+    static clearRows() {
+        return Array(20).fill(Array(10).fill(0));
+    }
+
+    static gravity(lvl) {
         return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
     }
 
@@ -219,7 +223,7 @@ class TetrisEngine {
 
     setLevel(lvl) {
         this.lvl = lvl;
-        this.G = this.gravity(lvl) * 1000;
+        this.G = TetrisEngine.gravity(lvl) * 1000;
     }
 
     tick(ts) {
