@@ -9,15 +9,12 @@ class MinoBase {
     /*
         rotate applies a transformation to the this.sq matrix.
         dir determines direction of rotation
-        0: clockwise (cw)
-        1: counter-cw (ccw)
-        2: 180 flip
     */
     rotate(dir) {
         const a = [], n = this.sq.length;
 
         switch (dir) {
-            case 0:
+            case RotateDirection.Clockwise:
                 for (var i = 0; i < n; i++) {
                     var row = [];
                     for (var j = n-1; j >= 0; j--) {
@@ -26,7 +23,7 @@ class MinoBase {
                     a.push(row);
                 }
                 break;
-            case 1:
+            case RotateDirection.CounterClockwise:
                 for (var i = n-1; i >= 0; i--) {
                     var row = [];
                     for (var j = 0; j < n; j++) {
@@ -35,7 +32,7 @@ class MinoBase {
                     a.push(row);
                 }
                 break;
-            case 2:
+            case RotateDirection.Flip180:
                 for (var i = n-1; i >= 0; i--) {
                     var row = [];
                     for (var j = 0; j < n; j++) {
@@ -64,6 +61,12 @@ class MinoBase {
             }
         }
     }
+}
+
+RotateDirection = {
+    Clockwise: 0,
+    CounterClockwise: 1,
+    Flip180: 2,
 }
 
 let Minos = {
@@ -195,17 +198,17 @@ class TetrisEngine {
                 break;
             case "KeyK":
             case"ArrowUp":
-                this.currentPiece.sq = this.currentPiece.rotate(0);
+                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.Clockwise);
                 break;
             case "KeyJ":
             case"ArrowDown":
                 this.currentPiece.y++;
                 break;
             case "KeyA":
-                this.currentPiece.sq = this.currentPiece.rotate(1);
+                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.CounterClockwise);
                 break;
             case "KeyS":
-                this.currentPiece.sq = this.currentPiece.rotate(2);
+                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.Flip180);
                 break;
         }
     }
