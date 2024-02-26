@@ -34,11 +34,76 @@ class TetrisMino {
 class TMino extends TetrisMino {
     constructor(x, y) {
         super(x, y, [
-            [1, 1, 1],
             [0, 1, 0],
+            [1, 1, 1],
             [0, 0, 0]
         ]);
     }
+}
+
+class IMino extends TetrisMino {
+    constructor(x, y) {
+        super(x, y, [
+            [1, 1, 1, 1],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+            [0, 0, 0, 0],
+        ]);
+    }
+}
+
+class OMino extends TetrisMino {
+    constructor(x, y) {
+        super(x, y, [
+            [1, 1],
+            [1, 1],
+        ]);
+    }
+}
+
+class SMino extends TetrisMino {
+    constructor(x, y) {
+        super(x, y, [
+            [1, 1, 0],
+            [0, 1, 1],
+            [0, 0, 0]
+        ]);
+    }
+}
+
+class ZMino extends TetrisMino {
+    constructor(x, y) {
+        super(x, y, [
+            [0, 1, 1],
+            [1, 1, 0],
+            [0, 0, 0]
+        ]);
+    }
+}
+
+class LMino extends TetrisMino {
+    constructor(x, y) {
+        super(x, y, [
+            [0, 0, 1],
+            [1, 1, 1],
+            [0, 0, 0]
+        ]);
+    }
+}
+
+class JMino extends TetrisMino {
+    constructor(x, y) {
+        super(x, y, [
+            [1, 0, 0],
+            [1, 1, 1],
+            [0, 0, 0]
+        ]);
+    }
+}
+
+function randmino(x, y) {
+    var rand = Math.floor(Math.random() * 7);
+    return new [TMino, IMino, OMino, SMino, ZMino, LMino, JMino][rand](x, y);
 }
 
 class TetrisCanvas {
@@ -69,7 +134,7 @@ class TetrisEngine {
         this.lastDrop = 0;
         this.setLevel(1);
 
-        this.currentPiece = new TMino(3, 0, sc);
+        this.currentPiece = randmino(3, -1);
 
         this.rows = [];
     }
