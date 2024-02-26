@@ -44,8 +44,8 @@ class TMino extends TetrisMino {
 class IMino extends TetrisMino {
     constructor(x, y) {
         super(x, y, [
-            [1, 1, 1, 1],
             [0, 0, 0, 0],
+            [1, 1, 1, 1],
             [0, 0, 0, 0],
             [0, 0, 0, 0],
         ]);
