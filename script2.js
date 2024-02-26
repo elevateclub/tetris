@@ -210,6 +210,39 @@ class TetrisEngine {
         return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
     }
 
+    canMovePieceDown() {
+        // determine if floor
+        const y = this.currentPiece.y+1, n = this.currentPiece.sq.length;
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < n; j++) {
+                // if the piece consumes a sq and computed y index is out of bounds.
+                if (this.currentPiece.sq[i][j] > 0 && y + i > 19) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    drop() {
+        if (this.canMovePieceDown()) {
+            this.currentPiece.y++;
+        } else {
+            const n = this.currentPiece.sq.length;
+            for (var i = 0; i < n; i++) {
+                const row = this.currentPiece.y + i;
+                if (row >= 20) {
+                    break;
+                }
+                for (var j = 0; j < n; j++) {
+                    const col = this.currentPiece.x + j;
+                    this.rows[row][col] += this.currentPiece.sq[i][j];
+                }
+            }
+            this.currentPiece = randmino();
+        }
+    }
+
     handleKeyPress = (evt) => {
         switch (evt.code) {
             case "KeyH":
@@ -226,7 +259,7 @@ class TetrisEngine {
                 break;
             case "KeyJ":
             case"ArrowDown":
-                this.currentPiece.y++;
+                this.drop();
                 break;
             case "KeyA":
                 this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.CounterClockwise);
@@ -244,7 +277,7 @@ class TetrisEngine {
 
     tick(ts) {
         if (ts - this.lastDrop >= this.G) {
-            this.currentPiece.y++;
+            this.drop();
             this.lastDrop = ts;
         }
     }
