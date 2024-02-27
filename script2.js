@@ -211,7 +211,27 @@ class TetrisEngine {
     }
 
     canMovePieceLeft() {
-        const nextx = this
+        const nextx = this.currentPiece.x-1, n = this.currentPiece.sq.length;
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < n; j++) {
+                if (this.currentPiece.sq[i][j] > 0 && nextx + j < 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    canMovePieceRight() {
+        const nextx = this.currentPiece.x+1, n = this.currentPiece.sq.length;
+        for (var i = 0; i < n; i++) {
+            for (var j = 0; j < n; j++) {
+                if (this.currentPiece.sq[i][j] > 0 && nextx + j > 9) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     canMovePieceDown() {
@@ -261,17 +281,29 @@ class TetrisEngine {
         }
     }
 
+    moveLeft() {
+        if (this.canMovePieceLeft()) {
+            this.currentPiece.x--;
+        }
+    }
+
+    moveRight() {
+        if (this.canMovePieceRight()) {
+            this.currentPiece.x++;
+        }
+    }
+
     handleKeyPress = (evt) => {
         evt.preventDefault();
 
         switch (evt.code) {
             case "KeyH":
             case "ArrowLeft":
-                this.currentPiece.x--;
+                this.moveLeft();
                 break;
             case "KeyL":
             case "ArrowRight":
-                this.currentPiece.x++;
+                this.moveRight();
                 break;
             case "KeyK":
             case"ArrowUp":
