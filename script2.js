@@ -187,7 +187,7 @@ class TetrisCanvas {
 }
 
 class TetrisEngine {
-    constructor(sc) {
+    constructor() {
         this.lvl = 0;
         this.G = 0;
         this.lastDrop = 0;
@@ -310,7 +310,7 @@ class TetrisEngine {
 class Tetris {
     constructor(ctx) {
         this.sc = 20;
-        this.engine = new TetrisEngine(ctx, this.sc);
+        this.engine = new TetrisEngine();
         this.canvas = new TetrisCanvas(ctx, this.sc, 0, 0);
     }
 
