@@ -221,6 +221,20 @@ class TetrisEngine {
                 }
             }
         }
+        // determine if blocks underneath
+        for (var i = 0; i < n; i++) {
+            const nexty = y + i;
+            if (nexty > 19) {
+                continue
+            }
+            for (var j = 0; j < n; j++) {
+                const x = this.currentPiece.x + j;
+                const below = this.rows[nexty][x];
+                if (below !== 0 && this.currentPiece.sq[i][j]) {
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
@@ -244,6 +258,8 @@ class TetrisEngine {
     }
 
     handleKeyPress = (evt) => {
+        evt.preventDefault();
+
         switch (evt.code) {
             case "KeyH":
             case "ArrowLeft":
