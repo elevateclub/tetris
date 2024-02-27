@@ -210,26 +210,30 @@ class TetrisEngine {
         return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
     }
 
+    canMovePieceLeft() {
+        const nextx = this
+    }
+
     canMovePieceDown() {
         // determine if floor
-        const y = this.currentPiece.y+1, n = this.currentPiece.sq.length;
+        const nexty = this.currentPiece.y+1, n = this.currentPiece.sq.length;
         for (var i = 0; i < n; i++) {
             for (var j = 0; j < n; j++) {
                 // if the piece consumes a sq and computed y index is out of bounds.
-                if (this.currentPiece.sq[i][j] > 0 && y + i > 19) {
+                if (this.currentPiece.sq[i][j] > 0 && nexty + i > 19) {
                     return false;
                 }
             }
         }
         // determine if blocks underneath
         for (var i = 0; i < n; i++) {
-            const nexty = y + i;
-            if (nexty > 19) {
+            const y = nexty + i;
+            if (y > 19) {
                 continue
             }
             for (var j = 0; j < n; j++) {
                 const x = this.currentPiece.x + j;
-                const below = this.rows[nexty][x];
+                const below = this.rows[y][x];
                 if (below !== 0 && this.currentPiece.sq[i][j]) {
                     return false;
                 }
