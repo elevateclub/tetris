@@ -64,6 +64,10 @@ class MinoBase {
             }
         }
     }
+
+    bringToTop() {
+        this.x = 3, this.y = 0;
+    }
 }
 
 RotateDirection = {
@@ -147,9 +151,9 @@ let Minos = {
 
 const allminos = [Minos.T, Minos.I, Minos.O, Minos.S, Minos.Z, Minos.L, Minos.J];
 
-function randmino() {
+function randmino(x = 13, y = 17) {
     var rand = Math.floor(Math.random() * 7);
-    return new allminos[rand](3, -1);
+    return new allminos[rand](x, y);
 }
 
 class TetrisCanvas {
@@ -216,10 +220,10 @@ class TetrisCanvas {
         this.ctx.stroke();
         
         this.ctx.font = "16px courier";
-        this.ctx.fillText("Score", iitx, scoreY + 2*this.sc);
+        this.ctx.fillText(`${engine.score}`, iitx, scoreY + 2*this.sc);
         this.ctx.fillText(`${engine.lvl}`, iitx, levelY + 2*this.sc);
         this.ctx.fillText(`${engine.lines}`, iitx, linesY + 2*this.sc);
-        this.ctx.fillText("Next", iitx, nextY + 2*this.sc);
+        engine.nextPiece.draw(this.ctx, this.sc, this.ox, this.oy);
     }
 
     drawBoard() {
@@ -257,10 +261,12 @@ class TetrisEngine {
         this.lastDrop = 0;
         this.setLevel(1);
 
-        this.currentPiece = randmino();
+        this.nextPiece = randmino();
+        this.currentPiece = randmino(3, 0);
 
         this.rows = TetrisEngine.clearRows();
         this.lines = 0;
+        this.score = 0;
     }
 
     static clearRows() {
@@ -353,6 +359,7 @@ class TetrisEngine {
             }
         }
         // detect if line
+        var linesMade = 0;
         for (var i = 0; i < this.rows.length; i++) {
             var isLine = true;
             for (var j = 0; j < this.rows[i].length; j++) {
@@ -364,6 +371,7 @@ class TetrisEngine {
             if (isLine) {
                 // increment line counter, clear line, and bring all previous lines down.
                 this.lines++;
+                linesMade++;
                 if (this.lines % 10 === 0) {
                     this.setLevel(this.lvl+1);    
                 }
@@ -375,7 +383,10 @@ class TetrisEngine {
                 }
             }
         }
-        this.currentPiece = randmino();
+        this.score += [0, 40, 100, 300, 1200][linesMade] * (this.lvl + 1);
+        this.nextPiece.bringToTop();
+        this.currentPiece = this.nextPiece
+        this.nextPiece = randmino();
         return true;
     }
 
