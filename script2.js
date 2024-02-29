@@ -240,17 +240,16 @@ class TetrisCanvas {
         engine.getCurrentPiece().draw(this.ctx, this.sc, this.box, this.boy);
 
         const rows = engine.getRows();
-        this.ctx.beginPath();
         for (var i = 0; i < 20; i++) {
             for (var j = 0; j < 10; j++) {
-                if (rows[i][j] > 0) {
+                if (rows[i][j] !== "") {
                     const x = this.box + j * this.sc;
                     const y = this.boy + i * this.sc;
-                    this.ctx.rect(x, y, this.sc, this.sc);
+                    this.ctx.fillStyle = rows[i][j];
+                    this.ctx.fillRect(x, y, this.sc, this.sc);
                 }
             }
         }
-        this.ctx.stroke();
     }
 }
 
@@ -272,7 +271,7 @@ class TetrisEngine {
     static clearRows() {
         const a = [];
         for (var i = 0; i < 20; i++) {
-            a.push(Array(10).fill(0));
+            a.push(Array(10).fill(""));
         }
         return a;
     }
@@ -315,7 +314,7 @@ class TetrisEngine {
                 }
                 
                 // determine if blocks conflict
-                const pieceExistsInRow = this.rows[nexty][nextx] > 0; 
+                const pieceExistsInRow = this.rows[nexty][nextx] !== ""; 
                 if (pieceExistsInSq && pieceExistsInRow) {
                     return false;
                 }
@@ -355,7 +354,7 @@ class TetrisEngine {
             }
             for (var j = 0; j < n; j++) {
                 const col = this.currentPiece.x + j;
-                this.rows[row][col] += this.currentPiece.sq[i][j];
+                this.rows[row][col] = this.currentPiece.sq[i][j] !== 0 ? this.currentPiece.color : this.rows[row][col];
             }
         }
         // detect if line
@@ -363,7 +362,7 @@ class TetrisEngine {
         for (var i = 0; i < this.rows.length; i++) {
             var isLine = true;
             for (var j = 0; j < this.rows[i].length; j++) {
-                if (this.rows[i][j] === 0) {
+                if (this.rows[i][j] === "") {
                     isLine = false;
                     break;
                 }
@@ -377,7 +376,7 @@ class TetrisEngine {
                 }
                 for (var j = i; j >= 0; j--) {
                     for (var k = 0; k < this.rows[j].length; k++) {
-                        var prev = j-1 >= 0 ? this.rows[j-1][k] : 0;
+                        var prev = j-1 >= 0 ? this.rows[j-1][k] : "";
                         this.rows[j][k] = prev;
                     }
                 }
