@@ -323,12 +323,14 @@ class TetrisEngine {
                 if (isLine) {
                     // increment line counter, clear line, and bring all previous lines down.
                     this.line++;
+                    if (this.line % 10) {
+                        this.setLevel(this.level+1);
+                    }
                     for (var j = i; j >= 0; j--) {
                         for (var k = 0; k < this.rows[j].length; k++) {
                             var prev = j-1 >= 0 ? this.rows[j-1][k] : 0;
                             this.rows[j][k] = prev;
                         }
-                        
                     }
                 }
             }
