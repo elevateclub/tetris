@@ -155,6 +155,7 @@ function randmino() {
 class TetrisCanvas {
     constructor(ctx, sc, ox, oy) {
         this.ctx = ctx;
+        this.ctx.textAlign = "center";
         this.sc = sc;
 
         this.ox = ox;
@@ -180,11 +181,45 @@ class TetrisCanvas {
         this.ctx.stroke();
     }
 
-    drawInfo() {
+    drawInfo(engine) {
+        this.ctx.fillStyle = "black";
+        this.ctx.font = "24px courier";
         this.ctx.clearRect(this.iox, this.ioy, this.iw, this.ih);
+
         this.ctx.beginPath();
+
+        // info box
         this.ctx.rect(this.iox, this.ioy, this.iw, this.ih);
+
+        // score box
+        var iiox = this.iox+this.sc;
+        var iitx = iiox+this.sc*3;
+        var scoreY = this.ioy+this.sc;
+        this.ctx.rect(iiox, scoreY, this.iw-2*this.sc, this.sc*3);
+        this.ctx.fillText("Score", iitx, scoreY + this.sc);
+
+        // level box
+        var levelY = this.ioy+6*this.sc;
+        this.ctx.rect(iiox, levelY, this.iw-2*this.sc, this.sc*3);
+        this.ctx.fillText("Level", iitx, levelY + this.sc);
+
+        // lines box
+        var linesY = this.ioy+10*this.sc;
+        this.ctx.rect(iiox, linesY, this.iw-2*this.sc, this.sc*3);
+        this.ctx.fillText("Lines", iitx, linesY + this.sc);
+
+        // next box
+        var nextY = this.ioy+15*this.sc;
+        this.ctx.rect(iiox, nextY, this.iw-2*this.sc, this.sc*4);
+        this.ctx.fillText("Next", iitx, nextY + this.sc);
+
         this.ctx.stroke();
+        
+        this.ctx.font = "16px courier";
+        this.ctx.fillText("Score", iitx, scoreY + 2*this.sc);
+        this.ctx.fillText(`${engine.lvl}`, iitx, levelY + 2*this.sc);
+        this.ctx.fillText(`${engine.lines}`, iitx, linesY + 2*this.sc);
+        this.ctx.fillText("Next", iitx, nextY + 2*this.sc);
     }
 
     drawBoard() {
@@ -197,7 +232,7 @@ class TetrisCanvas {
     tick(engine) {
         this.drawFrame();
         this.drawBoard();
-        this.drawInfo();
+        this.drawInfo(engine);
         engine.getCurrentPiece().draw(this.ctx, this.sc, this.box, this.boy);
 
         const rows = engine.getRows();
@@ -322,9 +357,9 @@ class TetrisEngine {
                 }
                 if (isLine) {
                     // increment line counter, clear line, and bring all previous lines down.
-                    this.line++;
-                    if (this.line % 10) {
-                        this.setLevel(this.level+1);
+                    this.lines++;
+                    if (this.lines % 10 === 0) {
+                        this.setLevel(this.lvl+1);    
                     }
                     for (var j = i; j >= 0; j--) {
                         for (var k = 0; k < this.rows[j].length; k++) {
