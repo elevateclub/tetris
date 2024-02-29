@@ -196,6 +196,7 @@ class TetrisEngine {
         this.currentPiece = randmino();
 
         this.rows = TetrisEngine.clearRows();
+        this.lines = 0;
     }
 
     static clearRows() {
@@ -269,6 +270,7 @@ class TetrisEngine {
         if (this.canMovePieceDown()) {
             this.currentPiece.y++;
         } else {
+            // capture piece
             const n = this.currentPiece.sq.length;
             for (var i = 0; i < n; i++) {
                 const row = this.currentPiece.y + i;
@@ -278,6 +280,27 @@ class TetrisEngine {
                 for (var j = 0; j < n; j++) {
                     const col = this.currentPiece.x + j;
                     this.rows[row][col] += this.currentPiece.sq[i][j];
+                }
+            }
+            // detect if line
+            for (var i = 0; i < this.rows.length; i++) {
+                var isLine = true;
+                for (var j = 0; j < this.rows[i].length; j++) {
+                    if (this.rows[i][j] === 0) {
+                        isLine = false;
+                        break;
+                    }
+                }
+                if (isLine) {
+                    // increment line counter, clear line, and bring all previous lines down.
+                    this.line++;
+                    for (var j = i; j >= 0; j--) {
+                        for (var k = 0; k < this.rows[j].length; k++) {
+                            var prev = j-1 >= 0 ? this.rows[j-1][k] : 0;
+                            this.rows[j][k] = prev;
+                        }
+                        
+                    }
                 }
             }
             this.currentPiece = randmino();
