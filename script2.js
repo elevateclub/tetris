@@ -52,14 +52,14 @@ class MinoBase {
     /*
         draw renders a rect at the given board position represented by this.sq
     */
-    draw(ctx, sc) {
+    draw(ctx, sc, ox, oy) {
         ctx.fillStyle = this.color;
 
         const n = this.sq.length;
         for (var i = 0; i < n; i++) {
             for (var j = 0; j < n; j++) {
                 if (this.sq[i][j]) {
-                    ctx.fillRect(sc*(this.x+j), sc*(this.y+i), sc, sc);
+                    ctx.fillRect(ox + sc*(this.x+j), oy + sc*(this.y+i), sc, sc);
                 }
             }
         }
@@ -156,28 +156,57 @@ class TetrisCanvas {
     constructor(ctx, sc, ox, oy) {
         this.ctx = ctx;
         this.sc = sc;
+
         this.ox = ox;
         this.oy = oy;
+        this.width = this.sc*20;
+        this.height = this.sc*21;
+
+        this.box = ox + 10;
+        this.boy = oy + 10;
+        this.bw = this.sc*10;
+        this.bh = this.sc*20;
+
+        this.iox = this.ox + this.sc*11;
+        this.ioy = this.oy + 10;
+        this.iw = this.sc*8;
+        this.ih = this.sc*20;
     }
 
     drawFrame() {
-        this.ctx.clearRect(this.ox, this.oy, this.sc*10, this.sc*20);
+        this.ctx.clearRect(this.ox, this.oy, this.width, this.height);
         this.ctx.beginPath();
-        this.ctx.rect(this.ox, this.oy, this.sc*10, this.sc*20);
+        this.ctx.rect(this.ox, this.oy, this.width, this.height);
+        this.ctx.stroke();
+    }
+
+    drawInfo() {
+        this.ctx.clearRect(this.iox, this.ioy, this.iw, this.ih);
+        this.ctx.beginPath();
+        this.ctx.rect(this.iox, this.ioy, this.iw, this.ih);
+        this.ctx.stroke();
+    }
+
+    drawBoard() {
+        this.ctx.clearRect(this.box, this.boy, this.bw, this.bh);
+        this.ctx.beginPath();
+        this.ctx.rect(this.box, this.boy, this.bw, this.bh);
         this.ctx.stroke();
     }
 
     tick(engine) {
         this.drawFrame();
-        engine.getCurrentPiece().draw(this.ctx, this.sc);
+        this.drawBoard();
+        this.drawInfo();
+        engine.getCurrentPiece().draw(this.ctx, this.sc, this.box, this.boy);
 
         const rows = engine.getRows();
         this.ctx.beginPath();
         for (var i = 0; i < 20; i++) {
             for (var j = 0; j < 10; j++) {
                 if (rows[i][j] > 0) {
-                    const x = j * this.sc;
-                    const y = i * this.sc;
+                    const x = this.box + j * this.sc;
+                    const y = this.boy + i * this.sc;
                     this.ctx.rect(x, y, this.sc, this.sc);
                 }
             }
