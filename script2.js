@@ -210,56 +210,59 @@ class TetrisEngine {
         return Math.pow(0.8 - ((lvl-1) * 0.007), lvl-1);
     }
 
-    canMovePieceLeft() {
-        const nextx = this.currentPiece.x-1, n = this.currentPiece.sq.length;
+    /*
+        isValidBoardState checks if the piece at the input x, y, and sq matrix
+        would be a valid placement. 
+    */
+    isValidBoardState(x, y, sq) {
+        var n = this.currentPiece.sq.length;
         for (var i = 0; i < n; i++) {
+            const nexty = y + i;
+            
             for (var j = 0; j < n; j++) {
-                if (this.currentPiece.sq[i][j] > 0 && nextx + j < 0) {
+                const nextx = x + j;
+                const pieceExistsInSq = sq[i][j] > 0;
+
+                // check bottom bound
+                if (nexty > 19 && pieceExistsInSq) {
+                    return false;
+                }
+
+                // check left bound
+                if (pieceExistsInSq && nextx < 0) {
+                    return false;
+                }
+
+                // check right bound
+                if (pieceExistsInSq && nextx > 9) {
+                    return false;
+                }
+               
+                // pass if empty block in sq
+                if (nexty > 19) {
+                    continue
+                }
+                
+                // determine if blocks conflict
+                const pieceExistsInRow = this.rows[nexty][nextx] > 0; 
+                if (pieceExistsInSq && pieceExistsInRow) {
                     return false;
                 }
             }
         }
         return true;
+    }
+
+    canMovePieceLeft() {
+        return this.isValidBoardState(this.currentPiece.x-1, this.currentPiece.y, this.currentPiece.sq);
     }
 
     canMovePieceRight() {
-        const nextx = this.currentPiece.x+1, n = this.currentPiece.sq.length;
-        for (var i = 0; i < n; i++) {
-            for (var j = 0; j < n; j++) {
-                if (this.currentPiece.sq[i][j] > 0 && nextx + j > 9) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return this.isValidBoardState(this.currentPiece.x+1, this.currentPiece.y, this.currentPiece.sq);
     }
 
     canMovePieceDown() {
-        // determine if floor
-        const nexty = this.currentPiece.y+1, n = this.currentPiece.sq.length;
-        for (var i = 0; i < n; i++) {
-            for (var j = 0; j < n; j++) {
-                // if the piece consumes a sq and computed y index is out of bounds.
-                if (this.currentPiece.sq[i][j] > 0 && nexty + i > 19) {
-                    return false;
-                }
-            }
-        }
-        // determine if blocks underneath
-        for (var i = 0; i < n; i++) {
-            const y = nexty + i;
-            if (y > 19) {
-                continue
-            }
-            for (var j = 0; j < n; j++) {
-                const x = this.currentPiece.x + j;
-                const below = this.rows[y][x];
-                if (below !== 0 && this.currentPiece.sq[i][j]) {
-                    return false;
-                }
-            }
-        }
-        return true;
+        return this.isValidBoardState(this.currentPiece.x, this.currentPiece.y+1, this.currentPiece.sq);
     }
 
     drop() {
@@ -307,17 +310,26 @@ class TetrisEngine {
                 break;
             case "KeyK":
             case"ArrowUp":
-                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.Clockwise);
+                var next = this.currentPiece.rotate(RotateDirection.Clockwise);
+                if (this.isValidBoardState(this.currentPiece.x, this.currentPiece.y, next)) {
+                    this.currentPiece.sq = next;
+                }
                 break;
             case "KeyJ":
             case"ArrowDown":
                 this.drop();
                 break;
             case "KeyA":
-                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.CounterClockwise);
+                var next = this.currentPiece.rotate(RotateDirection.CounterClockwise);
+                if (this.isValidBoardState(this.currentPiece.x, this.currentPiece.y, next)) {
+                    this.currentPiece.sq = next;
+                }
                 break;
             case "KeyS":
-                this.currentPiece.sq = this.currentPiece.rotate(RotateDirection.Flip180);
+                var next = this.currentPiece.rotate(RotateDirection.Flip180);
+                if (this.isValidBoardState(this.currentPiece.x, this.currentPiece.y, next)) {
+                    this.currentPiece.sq = next;
+                }
                 break;
         }
     }
